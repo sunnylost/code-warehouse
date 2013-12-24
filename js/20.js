@@ -1,4 +1,4 @@
-//http://www.51nod.com/favorite/index.html#!favoriteId=25
+//http://www.51nod.com/question/index.html#!questionId=449
 
 var a = '99999jjjjj',
     b = '9999900001';
