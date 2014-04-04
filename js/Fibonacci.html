@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Fibonacci</title>
+	<style type="text/css">
+		* {
+			padding: 0;
+			margin: 0;
+		}
+
+		body {
+			background-color: #ccc;
+		}
+
+		.main {
+			overflow: hidden;
+		}
+
+		.fn {
+			width: 800px;
+			height: 280px;
+			background-color: #fff;
+			margin-bottom: 10px;
+		}
+
+		.title {
+			text-align: center;
+			padding: 10px 0;
+			margin-bottom: 10px;
+			color: green;
+			background: #ccc;
+			font-size: 20px;
+		}
+
+		.config {
+			position: fixed;
+			right: 100px;
+			top: 20px;
+			overflow: hidden;
+		}
+
+		label {
+		}
+
+		#num1, #num2 {
+			display: block;
+			padding: 5px;
+			font-size: 20px;
+			margin-bottom: 20px;
+		}
+
+		#run {
+			font-size: 20px;
+			padding: 5px;
+		}
+
+		#result {
+			padding: 10px;
+			font-size: 20px;
+			background-color:#fff;
+			color: blue;
+		}
+
+		#result i {
+			font-style: normal;
+			color: orange;
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<div class="fn">
+			<p class="title">正常递归版本</p>
+			<pre>
+			function fib(n) {
+		            if(n <= 0) return '!!!';
+		            if(n == 1) return 0;
+		            if(n == 2) return 1;
+
+		            return fib(n - 1) + fib(n - 2);
+		        }
+			</pre>
+		</div>
+		<div class="fn">
+			<p class="title">带记忆的递归版本</p>
+			<pre>
+			function memoFib(n) {
+			    if(n <= 0) return '!!!';
+
+		            var cache = memoFib.cache || (memoFib.cache = {
+		                1: 0,
+		                2: 1
+		            });
+		            var item = cache[n];
+
+		            if(typeof item != 'undefined') {
+		                return item;
+		            } else {
+		                return cache[n] = memoFib(n - 1) + memoFib(n - 2);
+		            }
+	        	}
+			</pre>
+		</div>
+		<div class="fn">
+			<p class="title">迭代版本</p>
+			<pre>
+			function iterFib(n) {
+			    if(n <= 0) return '!!!';
+
+		            var arr = iterFib.arr || (iterFib.arr = [0, 1]);
+		            var len = arr.length;
+
+		            if(n > len) {
+		                for(i = len; i < n; i++) {
+		                    arr[i] = arr[i - 1] + arr[i - 2];
+		                }
+		            }
+		            return arr[n - 1];
+		        }
+			</pre>
+		</div>
+	</div>
+	<div class="config">
+		<label for="num1">第一次运算次数:</label>
+		<input id="num1" type="number" value="20">
+		<label for="num2">第二次运算次数:</label>
+		<input id="num2" type="number" value="30">
+		<button id="run">运行</button>
+		<div id="result"></div>
+	</div>
+	<script type="text/javascript">
+		var count1 = 0;
+		var count2 = 0;
+		var count3 = 0;
+
+		function log(str) {
+        	result.innerHTML += str + '<br>';
+        }
+
+        function reset() {
+        	memoFib.cache = {
+        		1: 0,
+                2: 1
+        	};
+
+        	iterFib.arr = [0, 1];
+
+        	count1 = 0;
+			count2 = 0;
+			count3 = 0;
+        }
+
+		run.onclick = function() {
+			result.innerHTML = '';
+
+	        var num = +num1.value;
+
+	        var resultNum = (fib(num), memoFib(num), iterFib(num));
+	        if(resultNum == '!!!') {
+	        	return alert('请输入数字。')
+	        }
+
+	        log('运算结果为:' + resultNum);
+	        log('正常递归版本计算次数为 <i>' + count1 + '</i>');
+	        log('带记忆的递归版本计算次数为 <i>' + count2 + '</i>');
+	        log('迭代版本计算次数为 <i>' + count3 + '</i>');
+	        log('<br>');
+
+	        count1 = 0;
+			count2 = 0;
+			count3 = 0;
+
+	        //second
+	        num = +num2.value;
+
+	        resultNum = (fib(num), memoFib(num), iterFib(num));
+	        if(resultNum == '!!!') {
+	        	return alert('请输入数字。')
+	        }
+
+	        log('运算结果为:' + resultNum);
+	        log('正常递归版本计算次数为 <i>' + count1 + '</i>');
+	        log('带记忆的递归版本计算次数为 <i>' + count2 + '</i>');
+	        log('迭代版本计算次数为 <i>' + count3 + '</i>');
+
+	        reset();
+		}
+
+		/**
+		 * 正常递归版本
+		 */
+        function fib(n) {
+            count1++;
+
+            if(n <= 0) return '!!!';
+            if(n == 1) return 0;
+            if(n == 2) return 1;
+
+            return fib(n - 1) + fib(n - 2);
+        }
+
+
+        var count2 = 0;
+        /**
+         * 带记忆的递归版本
+         */
+        function memoFib(n) {
+            var cache = memoFib.cache || (memoFib.cache = {
+                1: 0,
+                2: 1
+            });
+            var item = cache[n];
+
+            count2++;
+
+            if(n <= 0) return '!!!';
+            if(typeof item != 'undefined') {
+                return item;
+            } else {
+                return cache[n] = memoFib(n - 1) + memoFib(n - 2);
+            }
+        }
+
+        var count3 = 0;
+
+        /**
+         * 迭代版本
+         */
+        function iterFib(n) {
+        	if(n <= 0) return '!!!';
+            var arr = iterFib.arr || (iterFib.arr = [0, 1]);
+            var len = arr.length;
+
+            if(n > len) {
+                for(i = len; i < n; i++) {
+                    count3++;
+                    arr[i] = arr[i - 1] + arr[i - 2];
+                }
+            }
+            count3++;
+            return arr[n - 1];
+        }
+
+
+	</script>
+</body>
+</html>
