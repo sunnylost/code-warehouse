@@ -1,4 +1,5 @@
 #lang racket
+
 (define (search-for-primes n times)
   (newline)
   (newline)
@@ -9,7 +10,7 @@
   (define start-time (current-inexact-milliseconds))
   
   (define (find-n-primes num index)
-    (if (prime? num)
+    (if (fast-prime? num 5)
         (begin
           (display " *** ")
           (display num)
@@ -32,32 +33,33 @@
   (display (- (current-inexact-milliseconds) start))
   )
 
-(define (smallest-divisor n)
-  (define (divine n a)
-    (cond ((> (square a) n) n)
-          ((divide? n a) a)
-          (else (divine n (next a)))))
-  
-  (divine n 2))
+(define (fast-prime? n times)
+  (cond ((= times 0) #t)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else #f)))
 
-(define (divide? a b)
-  (= (remainder a b) 0))
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
 
-(define (next n)
-  (if (= n 2)
-      3
-      (+ n 2)))
-
-(define (square n)
-  (* n n))
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+         (else
+          (remainder (* base (expmod base (- exp 1) m)) m))
+         ))
 
 (define (even? n)
-  (= (remainder n 2) 0))
+  (= (remainder n 2) 0)
+  )
 
-(define (prime? n)
-  (if (= (smallest-divisor n) n)
-      #t
-      #f))
+(define (square n)
+  (* n n)
+  )
+
 
 (define count 3)
 (search-for-primes 1000 count)
