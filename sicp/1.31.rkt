@@ -16,5 +16,39 @@
 (define (inc n) (+ n 1))
 (define (identity n) n)
 
-(product identity 1 inc 20)
-(iter-product identity 1 inc 20)
+;(product identity 1 inc 20)
+;(iter-product identity 1 inc 20)
+
+;factorial
+(define (factorial n)
+  (product identity 1 inc n))
+
+;(factorial 5)
+
+;pi
+(define (even? n)
+  (= (remainder n 2) 0))
+
+(define (square n)
+  (* n n))
+
+(define (pi max)
+  (define (next a)
+    (+ a 3))
+
+  (define (term a)
+    (if (= a 2)
+        (identity 2)
+        (square a)))
+
+  (define start 2)
+  
+  (define (quarter)
+    (/ (product identity start next max)
+       (* max (product identity (inc start) next max)
+       )))
+  
+  (* 4 (quarter))
+)
+
+(pi 5)
