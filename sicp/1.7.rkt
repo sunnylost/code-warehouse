@@ -15,4 +15,5 @@
 (define (average x y)
   (/ (+ x y) 2))
 
-(sqrt-iter 4 1.0 0)
+(sqrt-iter 0.00002 1.0 0)
+(sqrt-iter 1000000 1.0 0)
