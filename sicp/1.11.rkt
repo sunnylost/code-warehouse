@@ -5,12 +5,14 @@
                      (* 2 (fn-rec (- n 2)))
                      (* 3 (fn-rec (- n 3)))))))
 
-(define (fn-iter n)  
+(define (fn-iter n)
   (define (iter index a b c)
     (define x (+ a (* 2 b) (* 3 c)))
-    (if (>= index n) 
-        (+ x)
-        (iter (+ index 1) x a b)))
+    (if (>= index n)
+        x
+        (iter (+ index 1) x a b)
+    )
+  )
   (iter 3 2 1 0)
   )
 

@@ -1,8 +1,7 @@
 #lang racket
 (define (iter-expt b n)
   (define (inner-iter-expt b n r)
-    (cond ((= n 0) r)
-          ((= n 1) r)
+    (cond ((or (= n 0) (= n 1)) r)
           ((even? n) (inner-iter-expt b (/ n 2) (* r r)))
           (else (inner-iter-expt b (- n 1) (* r b))))
     )
@@ -10,7 +9,7 @@
 )
 
 (define (even? a)
-    (= (remainder a 2) 0)
+    (= (/ a 2) 0)
 )
 
-(iter-expt 2 10)
+(iter-expt 2 9)
