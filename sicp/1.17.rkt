@@ -11,6 +11,6 @@
   (/ n 2))
 
 (define (even? n)
-  (= (halve n) 0))
+  (= (remainder n 2) 0))
 
 (* 2 16)

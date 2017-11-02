@@ -15,7 +15,4 @@
 (define (halve n)
   (/ n 2))
 
-(define (even? n)
-  (= (halve n) 0))
-
 (* 13 6)

@@ -9,7 +9,7 @@
 )
 
 (define (even? a)
-    (= (/ a 2) 0)
+    (= (remainder a 2) 0)
 )
 
 (iter-expt 2 9)
