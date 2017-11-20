@@ -108,5 +108,138 @@
         )
     )
 )
+ 
+;(for-each (lambda (x) (newline) (display x)) (list 239 32 2))
 
-(for-each (lambda (x) (newline) (display x)) (list 239 32 2))
+
+;
+(define (length items) (
+    if (null? items)
+        0
+        (+ 1 (length (cdr items))))
+)
+
+(define (count-leave items)
+    (cond ((null? items) 0)
+        ((not (pair? items)) 1)
+        (else (+ 
+                (count-leave (car items))
+                (count-leave (cdr items)))))
+)
+
+;(define x (cons (list 1 2) (list 3 4)))
+;(count-leave x)
+
+;2.25
+(define x1 (list 1 3 (list 5 7) 9))
+(define x2 (list (list 7)))
+(define x3 (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))
+
+;(car (cdr (car (cdr (cdr x1)))))
+;(car (car x2))
+;(car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr x3))))))))))))
+
+;(define x (list 1 2 3))
+;(define y (list 4 5 6))
+
+;(append x y)
+;(cons x y)
+;(list x y)
+
+;2.27
+(define (deep-reverse items)
+    (if (list? items)
+        (reverse (map deep-reverse items))
+        items))
+
+;(reverse (list (list 1 2) (list 3 4)))
+;(deep-reverse (list (list 1 2) (list 3 4)))
+
+;2.28
+(define (fringe items)
+    (cond ((null? items) `())
+        ((not (pair? items)) (list items))
+        (else (append (fringe (car items)) (fringe (cdr items))))))
+
+;(define x (list (list 1 2) (list 3 4)))
+;(fringe x)
+;(fringe (list x x))
+
+;2.29
+(define (make-mobile left right)
+    (list left right))
+
+(define (make-branch length structure)
+    (list length structure))
+
+(define (left-branch mobile)
+    (car mobile))
+
+(define (right-branch mobile)
+    (car (cdr mobile)))
+
+(define (filter proc m)
+    (if (proc m)
+        m
+        `()))
+
+(define (branch-length branch)
+    (append (list (car branch))
+        (if (pair? (car (cdr branch)))
+            (branch-length (car (cdr branch)))
+            `())
+))
+
+;(define (branch-structure branch))
+(define m
+    (make-mobile
+        (make-branch 1 2)
+        (make-branch 3 4)))
+
+(define mm 
+    (make-mobile
+        (make-branch 5 (list 1 2))
+        (make-branch 6 (list 3 4))))
+
+;(left-branch mm)
+;(right-branch mm)
+;(branch-length (left-branch mm))
+
+;2.30
+(define (square-tree tree)
+    (cond 
+        ((null? tree) `())
+        ((not (pair? tree)) (* tree tree))
+        (else (cons 
+            (square-tree (car tree))
+            (square-tree (cdr tree))))))
+
+(define (square-tree-map tree)
+    (map (lambda (x) 
+        (if (pair? x) 
+            (square-tree-map x)
+            (* x x))
+    ) tree))
+
+(define list-1
+    (list 1 
+        (list 2 (list 3 4) 5)
+        (list 6 7)))
+
+;(square-tree list-1)
+;(square-tree-map list-1)
+
+;2.31
+
+(define (tree-map proc tree)
+    (cond 
+        ((null? tree) `())
+        ((not (pair? tree)) (proc tree))
+        (else (cons
+            (tree-map proc (car tree))
+            (tree-map proc (cdr tree))))))
+
+(define (square-tree-1 tree)
+    (tree-map square tree))
+
+;(square-tree-1 list-1)
